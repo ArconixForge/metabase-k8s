@@ -1,0 +1,30 @@
+apiVersion: v2
+name: metabase-k8s
+description: A production-ready Helm chart for deploying Metabase on Kubernetes
+type: application
+version: 1.0.0
+appVersion: "0.53.4.1"
+keywords:
+  - metabase
+  - analytics
+  - bi
+  - business intelligence
+  - dashboard
+home: https://github.com/ArconixForge/metabase-k8s
+sources:
+  - https://github.com/ArconixForge/metabase-k8s
+  - https://github.com/metabase/metabase
+maintainers:
+  - name: ArconixForge
+    email: arconixforge@gmail.com
+    url: https://github.com/ArconixForge
+annotations:
+  artifacthub.io/links: |
+    - name: Metabase
+      url: https://www.metabase.com/
+  artifacthub.io/maintainers: |
+    - name: ArconixForge
+      email: arconixforge@gmail.com
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+  artifacthub.io/containsSecurityUpdates: "false"

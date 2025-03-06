@@ -1,0 +1,291 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "title": "Metabase Helm Chart Values",
+    "description": "Schema for validating Metabase Helm chart values.yaml",
+    "type": "object",
+    "properties": {
+      "enabled": {
+        "type": "boolean",
+        "description": "Enable or disable the Metabase deployment",
+        "default": true
+      },
+      "image": {
+        "type": "object",
+        "description": "Image configuration for Metabase",
+        "properties": {
+          "repository": {
+            "type": "string",
+            "description": "Docker image repository",
+            "default": "metabase/metabase"
+          },
+          "tag": {
+            "type": "string",
+            "description": "Docker image tag",
+            "default": "v0.53.4.1"
+          },
+          "pullPolicy": {
+            "type": "string",
+            "description": "Docker image pull policy",
+            "enum": ["Always", "IfNotPresent", "Never"],
+            "default": "IfNotPresent"
+          }
+        },
+        "required": ["repository", "tag", "pullPolicy"]
+      },
+      "replicaCount": {
+        "type": "integer",
+        "description": "Number of Metabase replicas",
+        "minimum": 1,
+        "default": 1
+      },
+      "service": {
+        "type": "object",
+        "description": "Service configuration for exposing Metabase",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Kubernetes service type",
+            "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+            "default": "ClusterIP"
+          },
+          "port": {
+            "type": "integer",
+            "description": "Service port",
+            "minimum": 1,
+            "maximum": 65535,
+            "default": 3000
+          }
+        },
+        "required": ["type", "port"]
+      },
+      "persistence": {
+        "type": "object",
+        "description": "Persistence configuration",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable persistence storage for Metabase",
+            "default": true
+          },
+          "storageClass": {
+            "type": ["string", "null"],
+            "description": "StorageClass for database persistence",
+            "default": "standard-rwo"
+          },
+          "accessMode": {
+            "type": "string",
+            "description": "PVC access mode",
+            "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"],
+            "default": "ReadWriteOnce"
+          },
+          "size": {
+            "type": "string",
+            "description": "PVC storage request size",
+            "pattern": "^[0-9]+(Gi|Mi)$",
+            "default": "10Gi"
+          }
+        },
+        "required": ["enabled", "accessMode", "size"]
+      },
+      "resources": {
+        "type": "object",
+        "description": "Resource requests and limits",
+        "properties": {
+          "limits": {
+            "type": "object",
+            "description": "Resource limits",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "description": "CPU limits",
+                "default": "2"
+              },
+              "memory": {
+                "type": "string",
+                "description": "Memory limits",
+                "pattern": "^[0-9]+(Gi|Mi|Ki|G|M|K)$",
+                "default": "4Gi"
+              }
+            },
+            "required": ["cpu", "memory"]
+          },
+          "requests": {
+            "type": "object",
+            "description": "Resource requests",
+            "properties": {
+              "cpu": {
+                "type": "string",
+                "description": "CPU requests",
+                "default": "500m"
+              },
+              "memory": {
+                "type": "string",
+                "description": "Memory requests",
+                "pattern": "^[0-9]+(Gi|Mi|Ki|G|M|K)$",
+                "default": "512Mi"
+              }
+            },
+            "required": ["cpu", "memory"]
+          }
+        },
+        "required": ["limits", "requests"]
+      },
+      "nodeSelector": {
+        "type": "object",
+        "description": "Node selector for pod assignment",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "default": {}
+      },
+      "tolerations": {
+        "type": "array",
+        "description": "Tolerations for pod assignment",
+        "items": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "default": []
+      },
+      "affinity": {
+        "type": "object",
+        "description": "Affinity for pod assignment",
+        "additionalProperties": true,
+        "default": {}
+      },
+      "metabase": {
+        "type": "object",
+        "description": "Metabase configuration",
+        "properties": {
+          "env": {
+            "type": "array",
+            "description": "Environment variables for Metabase configuration",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Environment variable name"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Environment variable value"
+                }
+              },
+              "required": ["name", "value"]
+            }
+          }
+        },
+        "required": ["env"]
+      },
+      "rbac": {
+        "type": "object",
+        "description": "RBAC settings",
+        "properties": {
+          "create": {
+            "type": "boolean",
+            "description": "Create RBAC resources",
+            "default": true
+          }
+        },
+        "required": ["create"]
+      },
+      "securityContext": {
+        "type": "object",
+        "description": "Security context settings",
+        "properties": {
+          "pod": {
+            "type": "object",
+            "description": "Pod security context",
+            "properties": {
+              "runAsUser": {
+                "type": "integer",
+                "description": "User ID for the pod",
+                "minimum": 0,
+                "default": 1000
+              },
+              "runAsGroup": {
+                "type": "integer",
+                "description": "Group ID for the pod",
+                "minimum": 0,
+                "default": 3000
+              },
+              "fsGroup": {
+                "type": "integer",
+                "description": "Group ID for volume ownership",
+                "minimum": 0,
+                "default": 2000
+              }
+            },
+            "required": ["runAsUser", "runAsGroup", "fsGroup"]
+          },
+          "container": {
+            "type": "object",
+            "description": "Container security context",
+            "properties": {
+              "runAsNonRoot": {
+                "type": "boolean",
+                "description": "Run container as non-root user",
+                "default": true
+              },
+              "allowPrivilegeEscalation": {
+                "type": "boolean",
+                "description": "Allow privilege escalation",
+                "default": false
+              },
+              "capabilities": {
+                "type": "object",
+                "description": "Container capabilities",
+                "properties": {
+                  "drop": {
+                    "type": "array",
+                    "description": "Capabilities to drop",
+                    "items": {
+                      "type": "string"
+                    },
+                    "default": ["ALL"]
+                  }
+                },
+                "required": ["drop"]
+              },
+              "readOnlyRootFilesystem": {
+                "type": "boolean",
+                "description": "Mount root filesystem as read-only",
+                "default": true
+              }
+            },
+            "required": ["runAsNonRoot", "allowPrivilegeEscalation", "capabilities", "readOnlyRootFilesystem"]
+          }
+        },
+        "required": ["pod", "container"]
+      },
+      "istio": {
+        "type": "object",
+        "description": "Istio VirtualService settings",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable Istio VirtualService",
+            "default": true
+          },
+          "host": {
+            "type": "string",
+            "description": "Host for VirtualService",
+            "default": "istio-host"
+          },
+          "gateway": {
+            "type": "string",
+            "description": "Gateway for VirtualService",
+            "default": "istio-gateway"
+          },
+          "prefix": {
+            "type": "string",
+            "description": "URL prefix for Metabase",
+            "default": "/path/metabase"
+          }
+        },
+        "required": ["enabled", "host", "gateway", "prefix"]
+      }
+    },
+    "required": ["enabled", "image", "service", "resources", "rbac", "securityContext"]
+  }
