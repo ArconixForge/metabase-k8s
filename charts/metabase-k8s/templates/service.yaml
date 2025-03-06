@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "k8-metabase.name" . }}
+  name: {{ include "metabase-k8s.name" . }}
   labels:
     {{- include "k8-metabase.labels" . | nindent 4 }}
 spec:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ include "k8-metabase.name" . }}
+    app: {{ include "metabase-k8s.name" . }}
 {{- end }}

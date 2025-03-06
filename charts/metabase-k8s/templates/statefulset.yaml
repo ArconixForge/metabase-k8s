@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "k8-metabase.name" . }}
+  name: {{ include "metabase-k8s.name" . }}
   labels:
     {{- include "k8-metabase.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ include "k8-metabase.name" . }}-headless
+  serviceName: {{ include "metabase-k8s.name" . }}-headless
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "k8-metabase.name" . }}
+      app: {{ include "metabase-k8s.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "k8-metabase.name" . }}
+        app: {{ include "metabase-k8s.name" . }}
     spec:
-      serviceAccountName: {{ include "k8-metabase.name" . }}
+      serviceAccountName: {{ include "metabase-k8s.name" . }}
       securityContext:
         runAsUser: {{ .Values.securityContext.pod.runAsUser }}
         runAsGroup: {{ .Values.securityContext.pod.runAsGroup }}
@@ -36,7 +36,7 @@ spec:
             - name: MB_JETTY_HOST
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "k8-metabase.name" . }}-config
+                  name: {{ include "metabase-k8s.name" . }}-config
                   key: MB_JETTY_HOST
             {{- with .Values.metabase.env }}
             {{- toYaml . | nindent 12 }}
@@ -77,7 +77,7 @@ spec:
     - metadata:
         name: metabase-data
         labels:
-          app: {{ include "k8-metabase.name" . }}
+          app: {{ include "metabase-k8s.name" . }}
       spec:
         accessModes:
           - {{ .Values.persistence.accessMode }}

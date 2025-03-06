@@ -5,10 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Chart.yaml'
-      - 'values.yaml'
-      - 'templates/**'
-      - 'values.schema.json'
+      - 'charts/metabase-k8s/**'  # Match your directory structure
   workflow_dispatch:  # Allows manual trigger
 
 permissions:
@@ -42,5 +39,5 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          charts_dir: "."
-          charts_repo_url: https://arconixforge.github.io/metabase-k8s
+          charts_dir: "charts"  # Specify the charts directory
+          charts_repo_url: https://arconixforge.github.io/helm-charts  # Update to match your repo URL

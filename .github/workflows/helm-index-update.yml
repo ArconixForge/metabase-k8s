@@ -1,0 +1,50 @@
+name: Update Helm Repository Index
+
+on:
+  push:
+    branches:
+      - gh-pages
+  workflow_dispatch:  # Allows manual trigger
+
+# Add permissions to allow the workflow to push to the repository
+permissions:
+  contents: write
+
+jobs:
+  update-helm-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper versioning
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.13.0
+
+      - name: Update Helm Index
+        run: |
+          # Create an empty index.yaml file if it doesn't exist
+          touch index.yaml
+          
+          # Update the index with the current chart packages
+          helm repo index . --url https://arconixforge.github.io/helm-charts/
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          
+          # Stage all changes including new files
+          git add index.yaml
+          
+          # Commit the changes (if any)
+          git commit -m "Auto-update Helm index.yaml" || echo "No changes to commit"
+          
+          # Push changes using GITHUB_TOKEN
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "k8-metabase.name" . }}-config
+  name: {{ include "metabase-k8s.name" . }}-config
   labels:
     {{- include "k8-metabase.labels" . | nindent 4 }}
 data:
