@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "metabase-k8s.name" . }}-config
   labels:
-    {{- include "k8-metabase.labels" . | nindent 4 }}
+    {{- include "metabase-k8s.labels" . | nindent 4 }}
 data:
   # Metabase listens on 0.0.0.0 by default
   MB_JETTY_HOST: "0.0.0.0"

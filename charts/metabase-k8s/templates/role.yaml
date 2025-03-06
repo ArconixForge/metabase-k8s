@@ -5,7 +5,7 @@ metadata:
   name: {{ include "metabase-k8s.name" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "k8-metabase.labels" . | nindent 4 }}
+    {{- include "metabase-k8s.labels" . | nindent 4 }}
 rules:
   - apiGroups: [""]
     resources: ["pods"]

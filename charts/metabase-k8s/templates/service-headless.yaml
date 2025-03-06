@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "metabase-k8s.name" . }}-headless
   labels:
-    {{- include "k8-metabase.labels" . | nindent 4 }}
+    {{- include "metabase-k8s.labels" . | nindent 4 }}
 spec:
   clusterIP: None
   ports:

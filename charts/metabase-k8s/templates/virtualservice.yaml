@@ -4,7 +4,7 @@ kind: VirtualService
 metadata:
   name: {{ include "metabase-k8s.name" . }}-vs
   labels:
-    {{- include "k8-metabase.labels" . | nindent 4 }}
+    {{- include "metabase-k8s.labels" . | nindent 4 }}
 spec:
   hosts:
     - {{ .Values.istio.host | quote }}
