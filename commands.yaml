@@ -1,0 +1,40 @@
+helmCommands:
+  # 💡 Template Command: Render templates without installing
+  template: |
+    helm template k8-metabase . --values values.yaml
+
+  # 💡 Lint Command: Validate chart syntax
+  lint: |
+    helm lint .
+
+  # 💡 Dry-run Command: Simulate installation without deploying
+  dryRun: |
+    helm install k8-metabase . --values values.yaml --namespace k8-configs --dry-run --debug
+
+  # 💡 Install Command: Install the chart into Kubernetes
+  install: |
+    helm install k8-metabase . --values values.yaml --namespace k8-configs  --debug
+
+  # 💡 Upgrade Command: Upgrade an existing release with updated chart values
+  upgrade: |
+    helm upgrade k8-metabase . --values values.yaml --namespace k8-configs
+
+  # 💡 Uninstall Command: Remove the release from Kubernetes
+  uninstall: |
+    helm uninstall k8-metabase --namespace k8-configs
+
+  # 💡 Status Command: Check the release status
+  status: |
+    helm status k8-metabase --namespace k8-configs
+
+  # 💡 List Command: List all installed Helm releases
+  list: |
+    helm list --namespace k8-configs
+
+  # 💡 History Command: View the revision history of a release
+  history: |
+    helm history k8-metabase --namespace k8-configs
+
+  # 💡 Rollback Command: Roll back to a previous release
+  rollback: |
+    helm rollback k8-metabase <REVISION> --namespace k8-configs

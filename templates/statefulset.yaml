@@ -1,0 +1,91 @@
+{{- if .Values.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "k8-metabase.name" . }}
+  labels:
+    {{- include "k8-metabase.labels" . | nindent 4 }}
+spec:
+  serviceName: {{ include "k8-metabase.name" . }}-headless
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "k8-metabase.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "k8-metabase.name" . }}
+    spec:
+      serviceAccountName: {{ include "k8-metabase.name" . }}
+      securityContext:
+        runAsUser: {{ .Values.securityContext.pod.runAsUser }}
+        runAsGroup: {{ .Values.securityContext.pod.runAsGroup }}
+        fsGroup: {{ .Values.securityContext.pod.fsGroup }}
+      # Add an additional volume for plugins
+      volumes:
+        - name: metabase-plugins
+          emptyDir: {}
+      containers:
+        - name: metabase
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: http
+          env:
+            - name: MB_JETTY_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "k8-metabase.name" . }}-config
+                  key: MB_JETTY_HOST
+            {{- with .Values.metabase.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: metabase-data
+              mountPath: /metabase-data
+            - name: metabase-plugins
+              mountPath: /plugins
+          securityContext:
+            runAsNonRoot: {{ .Values.securityContext.container.runAsNonRoot }}
+            allowPrivilegeEscalation: {{ .Values.securityContext.container.allowPrivilegeEscalation }}
+            capabilities:
+              drop: {{ toYaml .Values.securityContext.container.capabilities.drop | nindent 14 }}
+            readOnlyRootFilesystem: {{ .Values.securityContext.container.readOnlyRootFilesystem }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: metabase-data
+        labels:
+          app: {{ include "k8-metabase.name" . }}
+      spec:
+        accessModes:
+          - {{ .Values.persistence.accessMode }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        {{- if .Values.persistence.storageClass }}
+        storageClassName: {{ .Values.persistence.storageClass }}
+        {{- end }}
+  {{- end }}
+{{- end }}

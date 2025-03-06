@@ -1,0 +1,12 @@
+{{- if .Values.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "k8-metabase.name" . }}-config
+  labels:
+    {{- include "k8-metabase.labels" . | nindent 4 }}
+data:
+  # Metabase listens on 0.0.0.0 by default
+  MB_JETTY_HOST: "0.0.0.0"
+  # Add additional Metabase configuration options here as needed.
+{{- end }}

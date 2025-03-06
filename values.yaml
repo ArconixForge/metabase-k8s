@@ -1,0 +1,98 @@
+# Global toggle to enable/disable the chart
+enabled: true
+
+# Image settings
+image:
+  repository: metabase/metabase
+  tag: v0.53.4.1
+  pullPolicy: IfNotPresent
+
+# Number of replicas (usually 1 for Metabase)
+replicaCount: 1
+
+# Service configuration for exposing Metabase
+service:
+  type: ClusterIP
+  port: 3000
+
+# Persistence configuration
+persistence:
+  enabled: true
+  storageClass: "standard-rwo"  # Use default if empty, or specify a storage class (e.g. "standard")
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+# Resource requests and limits
+resources:
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+
+# Node scheduling
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+
+# Metabase configuration environment variables for H2 (Default database)
+metabase:
+  env:
+    - name: MB_PLUGINS_DIR
+      value: "/plugins"
+    - name: MB_DB_FILE
+      value: "/metabase-data/metabase.db"
+    - name: MB_SITE_URL
+      value: "https://gcp.psai.dev/web/metabase-ui"
+
+
+
+# Metabase configuration environment variables  for Postgres (External database)
+# NOTE : Postgtes User sould have access to public schema
+# metabase:
+#   env:
+    # - name: MB_DB_TYPE
+    #   value: "postgres"
+    # - name: MB_DB_HOST
+    #   value: "postgres-host"
+    # - name: MB_DB_PORT
+    #   value: "5432"
+    # - name: MB_DB_DBNAME
+    #   value: "metabase_db"
+    # - name: MB_DB_USER
+    #   value: "postgres-developer"
+    # - name: MB_DB_PASS
+    #   value: "postgres-password"
+    # - name: MB_PLUGINS_DIR
+    #   value: "/plugins"
+    # - name: MB_DB_FILE
+    #   value: "/metabase-data/metabase.db"
+    # - name: MB_DB_SCHEMA
+    #   value: "metabase_schema"
+
+# RBAC settings
+rbac:
+  create: true
+
+# Security Context settings
+securityContext:
+  pod:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  container:
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+
+# Istio VirtualService settings
+istio:
+  enabled: true
+  host: "istio-host"
+  gateway: "istio-gateway"
+  prefix: "/path/metabase"

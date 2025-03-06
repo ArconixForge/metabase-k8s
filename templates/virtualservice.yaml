@@ -1,0 +1,24 @@
+{{- if .Values.istio.enabled }}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "k8-metabase.name" . }}-vs
+  labels:
+    {{- include "k8-metabase.labels" . | nindent 4 }}
+spec:
+  hosts:
+    - {{ .Values.istio.host | quote }}
+  gateways:
+    - {{ .Values.istio.gateway | quote }}
+  http:
+    - match:
+        - uri:
+            prefix: {{ .Values.istio.prefix | quote }}
+      rewrite:
+        uri: " "
+      route:
+        - destination:
+            host: {{ include "k8-metabase.name" . }}.{{ .Release.Namespace }}.svc.cluster.local
+            port:
+              number: {{ .Values.service.port }}
+{{- end }}
