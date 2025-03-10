@@ -37,15 +37,7 @@ tolerations: []
 affinity: {}
 
 
-# Metabase configuration environment variables for H2 (Default database)
-metabase:
-  env:
-    - name: MB_PLUGINS_DIR
-      value: "/plugins"
-    - name: MB_DB_FILE
-      value: "/metabase-data/metabase.db"
-    - name: MB_SITE_URL
-      value: "https://gcp.psai.dev/web/metabase-ui"
+
 
 
 
@@ -96,3 +88,13 @@ istio:
   host: "istio-host"
   gateway: "istio-gateway"
   prefix: "/path/metabase"
+
+# Metabase configuration environment variables for H2 (Default database)
+metabase:
+  env:
+    - name: MB_PLUGINS_DIR
+      value: "/plugins"
+    - name: MB_DB_FILE
+      value: "/metabase-data/metabase.db"
+    - name: MB_SITE_URL
+      value: "https://istio_HOST/istio_PATH"
