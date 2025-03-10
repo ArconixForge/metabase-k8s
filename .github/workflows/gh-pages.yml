@@ -27,9 +27,14 @@ jobs:
         run: |
           mkdir -p .public
           
-          # Copy packaged charts and index file
+          # Copy packaged charts
           if [ -d "packaged" ]; then
             cp -r packaged .public/
+          fi
+          
+          # Copy index.yaml to root
+          if [ -f "index.yaml" ]; then
+            cp index.yaml .public/
           fi
           
           # Generate index.html
@@ -50,8 +55,8 @@ jobs:
           <body>
             <h1>Metabase K8s Helm Chart Repository</h1>
             <p>Use this repository by adding it to your Helm:</p>
-            <pre><code>helm repo add arconixforge https://arconixforge.github.io/metabase-k8s/packaged
-             helm repo update</code></pre>
+            <pre><code>helm repo add arconixforge https://arconixforge.github.io/metabase-k8s
+              helm repo update</code></pre>
             <h2>Installation</h2>
             <pre><code>helm install metabase arconixforge/metabase-k8s</code></pre>
             <p>For more information, see the <a href="https://github.com/ArconixForge/metabase-k8s/blob/main/charts/metabase-k8s/README.md">documentation</a>.</p>
