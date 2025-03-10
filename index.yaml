@@ -13,7 +13,7 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 0.53.4.1
-    created: "2025-03-10T12:49:54.146838584Z"
+    created: "2025-03-10T12:53:29.58906138Z"
     description: A production-ready Helm chart for deploying Metabase on Kubernetes
     digest: 6bb7e18599977ab3861d51f039eed14ecdee46a0dd6649a03bb6f00c09792bc8
     home: https://github.com/ArconixForge/metabase-k8s
@@ -47,9 +47,9 @@ entries:
       artifacthub.io/prerelease: "false"
     apiVersion: v2
     appVersion: 0.53.4.1
-    created: "2025-03-10T12:49:54.147400944Z"
+    created: "2025-03-10T12:53:29.589662221Z"
     description: A production-ready Helm chart for deploying Metabase on Kubernetes
-    digest: 6d0ad7534804943560a5c2cce3b3f29fb122ce0fced8ed97bf8b0b243a4cd3e4
+    digest: 07e5bc0a97df20be295498681a95b9a2562e97bc255b65df01e4b7bdacf099d9
     home: https://github.com/ArconixForge/metabase-k8s
     keywords:
     - metabase
@@ -69,4 +69,4 @@ entries:
     urls:
     - https://arconixforge.github.io/metabase-k8s/packaged/packaged/metabase-k8s-1.0.0.tgz
     version: 1.0.0
-generated: "2025-03-10T12:49:54.146092581Z"
+generated: "2025-03-10T12:53:29.588296533Z"
