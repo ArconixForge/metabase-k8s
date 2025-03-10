@@ -37,21 +37,34 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Chart version: $VERSION"
 
+      - name: Create Packaged Directory
+        run: |
+          # Ensure the packaged directory exists
+          mkdir -p packaged
+          echo "Created packaged directory"
+          ls -la
+
       - name: Package Helm Chart
         run: |
-          # Create packaged directory if it doesn't exist
-          mkdir -p packaged
-          
-          # Package the chart
+          # Package the chart to the packaged directory
           helm package charts/metabase-k8s -d packaged/
-          
-          # Update the Helm repository index
-          helm repo index packaged/ --url https://arconixforge.github.io/metabase-k8s/packaged
+          echo "Chart packaged:"
+          ls -la packaged/
+
+      - name: Generate Index File
+        run: |
+          # Generate index.yaml at the root level pointing to charts in packaged/
+          helm repo index . --url https://arconixforge.github.io/metabase-k8s/packaged
+          echo "Index generated:"
+          ls -la
+          cat index.yaml
 
       - name: Commit and Push Changes
         run: |
-          git add packaged/
-          git commit -m "Update packaged charts" || echo "No changes to commit"
+          # Stage both the packaged directory and index.yaml
+          git add packaged/ index.yaml
+          # Only commit if there are changes
+          git diff --staged --quiet || git commit -m "Update packaged charts and index"
           git push
 
       - name: Create GitHub Release
