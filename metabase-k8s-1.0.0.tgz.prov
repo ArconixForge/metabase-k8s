@@ -1,0 +1,53 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+annotations:
+  artifacthub.io/containsSecurityUpdates: "false"
+  artifacthub.io/links: |
+    - name: Metabase
+      url: https://www.metabase.com/
+  artifacthub.io/maintainers: |
+    - name: ArconixForge
+      email: arconixforge@gmail.com
+  artifacthub.io/operator: "false"
+  artifacthub.io/prerelease: "false"
+apiVersion: v2
+appVersion: 0.53.4.1
+description: A production-ready Helm chart for deploying Metabase on Kubernetes
+home: https://github.com/ArconixForge/metabase-k8s
+keywords:
+- - metabase
+- - analytics
+- - bi
+- - business intelligence
+- - dashboard
+maintainers:
+- - email: arconixforge@gmail.com
+  name: ArconixForge
+  url: https://github.com/ArconixForge
+name: metabase-k8s
+sources:
+- - https://github.com/ArconixForge/metabase-k8s
+- - https://github.com/metabase/metabase
+type: application
+version: 1.0.0
+
+...
+files:
+  metabase-k8s-1.0.0.tgz: sha256:6bb7e18599977ab3861d51f039eed14ecdee46a0dd6649a03bb6f00c09792bc8
+-----BEGIN PGP SIGNATURE-----
+
+wsFcBAEBCgAQBQJnzp4jCRCIYTAqOdx8EgAA5RIQAED2IUYYix3C/1Pb7IGtFJVc
+mTQeCCuCYWXujdJhW4hWrWOAQd+dM48y6tbw1l7VJq0EpJIyktGOJ67i83Bm29w2
+lQa310ED4DEQESszLGf0kZ7UqN79pY8nAPhuHis6TbaVx7fQ8Jk74FYoqb2SASqF
+GXZHLTw7RR7pv23B5QkPC4TvTHGC8aGdwpAHOfrVcF9v080WjjnBbRktJKt3KvsV
+uQNgDXa0p3HR3aGFWYM+LdZOZ37UBp54DZXVPcNdBr3axcDf2ewnK1CnHzmM76Y5
+rnAxPX3C1otIDwmHqYgITehFlZ2ASSIgg3JfC2xTiF2ZTKfzQXdgajMzhGdXccI9
+2BMn2aC9EjzNNp2jQFfJKyFeEi5b0Z8V3zjCPWLhLi3ajw9W2PDejfHrKGt+e/4C
+GuqYckkDRgNstDKv99Xz0ICdvoiRWKEDgEoMB+qZLXZ/kprUr1+JoYHMOnYckhpE
+BE80AWHs7KTk1yJBQsz/lQqQrW0nEjRope1ow5+PRUdkglhtCJW+xbEvh+fbRDsG
+8vspT3jMO20F8+TT7O/ZcSWGkGfZnHZgCqejqpEp74kymkjgIoYOaMGNixudA7Q1
+RV9D9GYJ0BeRjbE5vhYQ44ovwBtTBVCQAGl5dU4XP7yA0Pl+OsJ5+91ZhTYyJ+D/
++6f7by+Pl5lecZJy6P+Q
+=boGD
+-----END PGP SIGNATURE-----
