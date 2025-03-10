@@ -3,13 +3,13 @@ name: Lint and Test Charts
 on:
   pull_request:
     paths:
-      - 'charts/metabase-k8s/**'  # Match your directory structure
+      - 'charts/metabase-k8s/**'
   push:
     branches:
       - main
     paths:
-      - 'charts/metabase-k8s/**'  # Match your directory structure
-  workflow_dispatch:  # Allows manual trigger
+      - 'charts/metabase-k8s/**'
+  workflow_dispatch:
 
 jobs:
   lint-test:
@@ -34,20 +34,29 @@ jobs:
       - name: Set up chart-testing
         uses: helm/chart-testing-action@v2.6.1
 
+      - name: Configure chart-testing
+        run: |
+          cat > ct.yaml <<EOF
+          charts-dirs:
+            - charts
+          chart-dirs:
+            - charts
+          EOF
+
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }} --charts-dir charts)
+          changed=$(ct list-changed --target-branch ${{ github.event.repository.default_branch }})
           if [[ -n "$changed" ]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Run chart-testing (lint)
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }} --charts-dir charts
+        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.8.0
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install --target-branch ${{ github.event.repository.default_branch }} --charts-dir charts
+        run: ct install --target-branch ${{ github.event.repository.default_branch }}
