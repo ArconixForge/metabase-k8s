@@ -23,18 +23,9 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: v3.13.0
-
-      - name: Build with Helm
+      - name: Build Landing Page
         run: |
           mkdir -p .public
-          cp -r charts .public/
-          cp README.md .public/
-          cp LICENSE .public/
-          
           # Generate index.html
           cat > .public/index.html <<EOL
           <!DOCTYPE html>
@@ -53,8 +44,7 @@ jobs:
           <body>
             <h1>ArconixForge Helm Repository</h1>
             <p>Welcome to the ArconixForge Helm Repository. You can use this repository by adding it to your Helm:</p>
-            <pre><code>helm repo add arconixforge https://arconixforge.github.io/helm-charts
-                helm repo update</code></pre>
+            <pre><code>helm repo add arconixforge https://arconixforge.github.io/helm-charts helm repo update</code></pre>
             <h2>Available Charts</h2>
             <ul>
               <li><a href="https://github.com/ArconixForge/helm-charts/tree/main/charts/metabase-k8s">metabase-k8s</a> - A production-ready Helm chart for deploying Metabase on Kubernetes</li>
