@@ -57,6 +57,8 @@ jobs:
           helm repo index . --url https://arconixforge.github.io/metabase-k8s/packaged
           echo "Index generated:"
           ls -la
+          # Fix any incorrect URLs in the index file
+          sed -i 's|https://arconixforge.github.io/metabase-k8s/packaged/packaged/|https://arconixforge.github.io/metabase-k8s/packaged/|g' index.yaml
           cat index.yaml
 
       - name: Commit and Push Changes
