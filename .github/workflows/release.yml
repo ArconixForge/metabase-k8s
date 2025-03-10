@@ -30,10 +30,26 @@ jobs:
         with:
           version: v3.13.0
 
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Package Helm Chart
+        run: |
+          # Create packaged directory if it doesn't exist
+          mkdir -p packaged
+          
+          # Package the chart
+          helm package charts/metabase-k8s -d packaged/
+          
+          # Update the Helm repository index
+          helm repo index packaged/ --url https://arconixforge.github.io/metabase-k8s/packaged
+
+      - name: Commit and Push Changes
+        run: |
+          git add packaged/
+          git commit -m "Update packaged charts" || echo "No changes to commit"
+          git push
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          charts_dir: "charts"
-          charts_repo_url: https://arconixforge.github.io/metabase-k8s
+          tag_name: "metabase-k8s-$(grep 'version:' charts/metabase-k8s/Chart.yaml | awk '{print $2}')"
+          files: packaged/metabase-k8s-*.tgz
+          generate_release_notes: true

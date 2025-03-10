@@ -26,14 +26,10 @@ jobs:
       - name: Build Landing Page
         run: |
           mkdir -p .public
-          # Copy existing index.yaml if it exists
-          if [ -f "index.yaml" ]; then
-            cp index.yaml .public/
-          fi
           
-          # Copy packaged chart files if they exist
-          if [ -f "*.tgz" ]; then
-            cp *.tgz .public/
+          # Copy packaged charts and index file
+          if [ -d "packaged" ]; then
+            cp -r packaged .public/
           fi
           
           # Generate index.html
@@ -54,7 +50,7 @@ jobs:
           <body>
             <h1>Metabase K8s Helm Chart Repository</h1>
             <p>Use this repository by adding it to your Helm:</p>
-            <pre><code>helm repo add arconixforge https://arconixforge.github.io/metabase-k8s
+            <pre><code>helm repo add arconixforge https://arconixforge.github.io/metabase-k8s/packaged
              helm repo update</code></pre>
             <h2>Installation</h2>
             <pre><code>helm install metabase arconixforge/metabase-k8s</code></pre>
