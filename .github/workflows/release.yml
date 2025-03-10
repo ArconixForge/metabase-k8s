@@ -30,6 +30,13 @@ jobs:
         with:
           version: v3.13.0
 
+      - name: Extract Chart Version
+        id: chart_version
+        run: |
+          VERSION=$(grep 'version:' charts/metabase-k8s/Chart.yaml | awk '{print $2}')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Chart version: $VERSION"
+
       - name: Package Helm Chart
         run: |
           # Create packaged directory if it doesn't exist
@@ -50,6 +57,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: "metabase-k8s-$(grep 'version:' charts/metabase-k8s/Chart.yaml | awk '{print $2}')"
+          tag_name: "metabase-k8s-${{ steps.chart_version.outputs.version }}"
           files: packaged/metabase-k8s-*.tgz
           generate_release_notes: true
