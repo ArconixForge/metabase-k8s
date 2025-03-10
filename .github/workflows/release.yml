@@ -40,4 +40,4 @@ jobs:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
           charts_dir: "charts"  # Specify the charts directory
-          charts_repo_url: https://arconixforge.github.io/helm-charts  # Update to match your repo URL
+          charts_repo_url: https://arconixforge.github.io/metabase-k8s  # Update to match your repo URL
