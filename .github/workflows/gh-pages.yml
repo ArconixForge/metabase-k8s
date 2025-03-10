@@ -26,12 +26,22 @@ jobs:
       - name: Build Landing Page
         run: |
           mkdir -p .public
+          # Copy existing index.yaml if it exists
+          if [ -f "index.yaml" ]; then
+            cp index.yaml .public/
+          fi
+          
+          # Copy packaged chart files if they exist
+          if [ -f "*.tgz" ]; then
+            cp *.tgz .public/
+          fi
+          
           # Generate index.html
           cat > .public/index.html <<EOL
           <!DOCTYPE html>
           <html>
           <head>
-            <title>ArconixForge Helm Repository</title>
+            <title>Metabase K8s Helm Chart</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <style>
@@ -42,20 +52,19 @@ jobs:
             </style>
           </head>
           <body>
-            <h1>ArconixForge Helm Repository</h1>
-            <p>Welcome to the ArconixForge Helm Repository. You can use this repository by adding it to your Helm:</p>
+            <h1>Metabase K8s Helm Chart Repository</h1>
+            <p>Use this repository by adding it to your Helm:</p>
             <pre><code>helm repo add arconixforge https://arconixforge.github.io/metabase-k8s
-            helm repo update</code></pre>
-            <h2>Available Charts</h2>
-            <ul>
-              <li><a href="https://github.com/ArconixForge/helm-charts/tree/main/charts/metabase-k8s">metabase-k8s</a> - A production-ready Helm chart for deploying Metabase on Kubernetes</li>
-            </ul>
+             helm repo update</code></pre>
+            <h2>Installation</h2>
+            <pre><code>helm install metabase arconixforge/metabase-k8s</code></pre>
+            <p>For more information, see the <a href="https://github.com/ArconixForge/metabase-k8s/blob/main/charts/metabase-k8s/README.md">documentation</a>.</p>
           </body>
           </html>
           EOL
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # Updated to v3
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .public
 
@@ -68,4 +77,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # Updated to v4
+        uses: actions/deploy-pages@v4

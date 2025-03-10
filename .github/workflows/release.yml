@@ -5,11 +5,11 @@ on:
     branches:
       - main
     paths:
-      - 'charts/metabase-k8s/**'  # Match your directory structure
-  workflow_dispatch:  # Allows manual trigger
+      - 'charts/metabase-k8s/**'
+  workflow_dispatch:
 
 permissions:
-  contents: write  # Needed for chart-releaser to create releases
+  contents: write
 
 jobs:
   release:
@@ -30,14 +30,10 @@ jobs:
         with:
           version: v3.13.0
 
-      - name: Add Helm repositories
-        run: |
-          helm repo add bitnami https://charts.bitnami.com/bitnami
-
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         with:
-          charts_dir: "charts"  # Specify the charts directory
-          charts_repo_url: https://arconixforge.github.io/metabase-k8s  # Update to match your repo URL
+          charts_dir: "charts"
+          charts_repo_url: https://arconixforge.github.io/metabase-k8s
