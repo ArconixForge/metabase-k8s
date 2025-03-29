@@ -1,37 +1,6 @@
 # Artifact Hub repository metadata
-repositoryID: 8c684e58-c7cc-4f46-8fa4-d9ed29a50a28  # Keep this or get a new one from ArtifactHub
+repositoryID: 8c684e58-c7cc-4f46-8fa4-d9ed29a50a28
 owners:
   - name: ArconixForge
     email: arconixforge@gmail.com
     
-# Chart metadata
-chart:
-  name: metabase-k8s
-  description: A Helm chart for deploying Metabase on Kubernetes
-  keywords:
-    - metabase
-    - analytics
-    - bi
-    - business intelligence
-    - dashboard
-  links:
-    - name: Source
-      url: https://github.com/ArconixForge/metabase-k8s
-    - name: Metabase
-      url: https://www.metabase.com/
-  maintainers:
-    - name: ArconixForge
-      email: arconixforge@gmail.com
-  provider:
-    name: ArconixForge
-  license: Apache-2.0
-  annotations:
-    artifacthub.io/changes: |
-      - Initial release of metabase-k8s Helm chart
-      - Support for H2 and PostgreSQL databases
-      - Includes RBAC, security best practices, and Istio integration
-    artifacthub.io/containsSecurityUpdates: "false"
-    artifacthub.io/prerelease: "false"
-    artifacthub.io/signKey: |
-      fingerprint: F33A 93 38CCF24238
-      url: https://keybase.io/arconixforge/pgp_keys.asc
